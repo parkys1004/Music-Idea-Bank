@@ -1,0 +1,5 @@
+{
+  "name": "뮤직 아이디어 뱅크",
+  "description": "음악 장르를 선택하면 제목과 가사 아이디어를 자동으로 생성해주는 AI 도구입니다.",
+  "requestFramePermissions": []
+}

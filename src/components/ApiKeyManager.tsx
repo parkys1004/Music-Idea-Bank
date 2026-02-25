@@ -10,13 +10,20 @@ interface ApiKeyManagerProps {
 }
 
 const STORAGE_KEY = 'gemini_api_key_enc';
+const PERSIST_PREF_KEY = 'gemini_api_persist_pref';
 const SECRET_SALT = 'gemini-music-app-salt-v1'; // Simple obfuscation
 
 export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
   const [apiKey, setApiKeyState] = useState('');
   const [status, setStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
-  const [isPersistEnabled, setIsPersistEnabled] = useState(false);
+  
+  // Initialize persistence preference from localStorage, default to true
+  const [isPersistEnabled, setIsPersistEnabled] = useState(() => {
+    const pref = localStorage.getItem(PERSIST_PREF_KEY);
+    return pref !== null ? pref === 'true' : true;
+  });
+
   const [capabilities, setCapabilities] = useState<{name: string, available: boolean}[]>([]);
 
   // Load key from storage on mount
@@ -103,6 +110,7 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
   const togglePersist = () => {
     const newState = !isPersistEnabled;
     setIsPersistEnabled(newState);
+    localStorage.setItem(PERSIST_PREF_KEY, String(newState));
     
     if (newState && apiKey && status === 'success') {
       saveToStorage(apiKey);

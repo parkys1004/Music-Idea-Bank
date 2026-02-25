@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Music, Sparkles, Disc, Mic2, Loader2, RefreshCw, ChevronRight, Copy, Check, Wand2, Download, History as HistoryIcon, Zap, Radio, Piano, Headphones, Upload, Settings2, Globe, User, ArrowUp, Menu, Guitar, Film, Cloud, Mic, Drum, Baby, Key, Cpu } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { generateIdeaMetadata, generateLyrics, type MusicIdea, type LanguageConfig, AVAILABLE_MODELS, setModel, getModel, getApiKey } from './services/ai';
+import { generateIdeaMetadata, generateLyrics, type MusicIdea, type LanguageConfig, AVAILABLE_MODELS, setModel, getModel } from './services/ai';
 import ApiKeyManager from './components/ApiKeyManager';
 
 function cn(...inputs: ClassValue[]) {
@@ -115,14 +115,6 @@ export default function App() {
   };
 
   const handleGenreSelect = async (genreName: string) => {
-    // Check if API Key is available
-    const hasApiKey = getApiKey() || process.env.GEMINI_API_KEY;
-    if (!hasApiKey) {
-      setError("API 키가 등록되지 않았습니다. 우측 상단 열쇠 아이콘을 눌러 API 키를 등록해주세요.");
-      setShowApiKeyManager(true);
-      return;
-    }
-
     setSelectedGenre(genreName);
     setIsLoading(true);
     setError(null);

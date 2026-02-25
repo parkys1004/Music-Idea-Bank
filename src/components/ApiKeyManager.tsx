@@ -39,9 +39,7 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
     }
   }, []);
 
-  const handleTestConnection = async (e?: React.MouseEvent) => {
-    e?.preventDefault();
-    
+  const handleTestConnection = async () => {
     if (!apiKey) {
       setStatus('error');
       setMessage('API Key를 입력해주세요.');
@@ -164,7 +162,6 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
 
                 <div className="flex gap-2">
                   <button
-                    type="button"
                     onClick={handleTestConnection}
                     disabled={status === 'testing'}
                     className="flex-1 bg-[#2c2e33] hover:bg-[#373a40] text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
@@ -177,7 +174,6 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
                     저장 및 테스트
                   </button>
                   <button
-                    type="button"
                     onClick={handleDelete}
                     className="bg-red-500/10 hover:bg-red-500/20 text-red-400 font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
                   >
@@ -244,7 +240,6 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
                     사용자 로컬 암호화
                   </div>
                   <button
-                    type="button"
                     onClick={togglePersist}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
                       isPersistEnabled ? 'bg-emerald-500' : 'bg-slate-700'

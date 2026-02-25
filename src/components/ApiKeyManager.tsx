@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Key, Check, AlertCircle, Loader2, Trash2, Zap, FileText, Music, Shield, Settings } from 'lucide-react';
+import { X, Key, Check, AlertCircle, Loader2, Trash2, Zap, FileText, Music, Shield, Settings, ExternalLink } from 'lucide-react';
 import CryptoJS from 'crypto-js';
 import { setApiKey, testConnection } from '../services/ai';
 
@@ -188,6 +188,18 @@ export default function ApiKeyManager({ isOpen, onClose }: ApiKeyManagerProps) {
                     <Trash2 className="w-4 h-4" />
                     삭제
                   </button>
+                </div>
+
+                <div className="flex justify-end">
+                  <a 
+                    href="https://aistudio.google.com/app/plan_information" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-emerald-400 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    Google AI Studio에서 할당량 확인하기
+                  </a>
                 </div>
               </div>
 

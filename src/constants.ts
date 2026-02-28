@@ -2,6 +2,9 @@ import { Music, Sparkles, Disc, Mic2, Zap, Radio, Piano, Headphones, Guitar, Fil
 
 export const GENRES = [
   { id: 'kpop', name: 'K-Pop', icon: Sparkles, color: 'from-pink-500 to-rose-500' },
+  { id: 'popdance', name: 'Pop Dance', icon: Zap, color: 'from-pink-400 to-purple-500' },
+  { id: 'hiphopdance', name: 'Hip-hop Dance', icon: Disc, color: 'from-orange-500 to-red-500' },
+  { id: 'synthpop', name: 'Synth-pop', icon: Radio, color: 'from-indigo-400 to-cyan-500' },
   { id: 'ballad', name: '발라드', icon: Mic2, color: 'from-blue-400 to-indigo-500' },
   { id: 'hiphop', name: '힙합', icon: Disc, color: 'from-orange-500 to-red-600' },
   { id: 'rnb', name: 'R&B', icon: Music, color: 'from-purple-500 to-violet-600' },

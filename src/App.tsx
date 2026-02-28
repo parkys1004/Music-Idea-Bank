@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Key, Upload, Download, Settings2, ArrowUp, ExternalLink, BookOpen } from 'lucide-react';
+import { Key, Upload, Download, Settings2, ArrowUp, ExternalLink, BookOpen, History as HistoryIcon } from 'lucide-react';
 import { generateIdeaMetadata, generateLyrics, type MusicIdea, type LanguageConfig, setModel, getModel, getApiKey } from './services/ai';
 import ApiKeyManager from './components/ApiKeyManager';
 import SettingsPanel from './components/SettingsPanel';
@@ -10,6 +10,7 @@ import QuickJumpNav from './components/QuickJumpNav';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingProgress from './components/LoadingProgress';
 import UserGuide from './components/UserGuide';
+import HistoryModal from './components/HistoryModal';
 
 export default function App() {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
@@ -45,6 +46,9 @@ export default function App() {
   
   // User Guide state
   const [showUserGuide, setShowUserGuide] = useState(false);
+
+  // History Modal state
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -272,6 +276,16 @@ export default function App() {
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              onClick={() => setShowHistoryModal(true)}
+              className="inline-flex items-center px-4 py-2 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium border border-purple-500/20"
+            >
+              <HistoryIcon className="w-4 h-4 mr-2" />
+              생성 기록
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               onClick={() => setShowApiKeyManager(true)}
               className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 transition-colors text-sm font-medium border border-emerald-500/20"
             >
@@ -397,6 +411,17 @@ export default function App() {
       <UserGuide 
         isOpen={showUserGuide} 
         onClose={() => setShowUserGuide(false)} 
+      />
+      <HistoryModal 
+        isOpen={showHistoryModal} 
+        onClose={() => setShowHistoryModal(false)} 
+        history={history}
+        onSelectIdea={(idea) => {
+          setIdeas([idea]);
+          setSelectedGenre(idea.genre || 'History');
+          setShowHistoryModal(false);
+        }}
+        onClearHistory={() => setHistory([])}
       />
     </div>
   );

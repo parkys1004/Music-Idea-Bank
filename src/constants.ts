@@ -38,6 +38,7 @@ export const VOCAL_TYPES = [
   { id: 'Male', label: '남성 보컬' },
   { id: 'Duet', label: '혼성 듀엣' },
   { id: 'Group', label: '그룹/합창' },
+  { id: 'Child', label: '어린이 보컬' },
   { id: 'Robotic', label: '로봇/오토튠' },
   { id: 'Instrumental', label: '연주곡 (보컬 없음)' },
 ];

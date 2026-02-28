@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Globe, User, Cpu } from 'lucide-react';
+import { Globe, User, Cpu, AlignLeft } from 'lucide-react';
 import { LANGUAGES, VOCAL_TYPES } from '../constants';
 import { AVAILABLE_MODELS } from '../services/ai';
 import { cn } from '../lib/utils';
@@ -18,6 +18,8 @@ interface SettingsPanelProps {
   setVocalType: (type: string) => void;
   currentModel: string;
   handleModelChange: (modelId: string) => void;
+  lyricsLength: { total: number; noSpace: number };
+  setLyricsLength: (length: { total: number; noSpace: number }) => void;
 }
 
 export default function SettingsPanel({
@@ -34,6 +36,8 @@ export default function SettingsPanel({
   setVocalType,
   currentModel,
   handleModelChange,
+  lyricsLength,
+  setLyricsLength,
 }: SettingsPanelProps) {
   return (
     <AnimatePresence>
@@ -96,6 +100,40 @@ export default function SettingsPanel({
                   />
                 </div>
               )}
+            </div>
+
+            <div className="h-px bg-white/10" />
+
+            {/* Lyrics Length Settings */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-white/90 font-medium">
+                <AlignLeft className="w-4 h-4 text-orange-400" />
+                가사 길이 설정
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5 ml-1">공백 포함 (자)</label>
+                  <input
+                    type="number"
+                    value={lyricsLength.total}
+                    onChange={(e) => setLyricsLength({ ...lyricsLength, total: Number(e.target.value) })}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50"
+                    min={100}
+                    max={3000}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5 ml-1">공백 제외 (자)</label>
+                  <input
+                    type="number"
+                    value={lyricsLength.noSpace}
+                    onChange={(e) => setLyricsLength({ ...lyricsLength, noSpace: Number(e.target.value) })}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50"
+                    min={50}
+                    max={2000}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="h-px bg-white/10" />

@@ -28,6 +28,7 @@ export default function App() {
   const [vocalType, setVocalType] = useState('Female');
   const [showSettings, setShowSettings] = useState(true);
   const [currentModel, setCurrentModel] = useState(getModel());
+  const [lyricsLength, setLyricsLength] = useState({ total: 800, noSpace: 400 });
 
   const handleModelChange = (modelId: string) => {
     setModel(modelId);
@@ -102,7 +103,8 @@ export default function App() {
     const langConfig: LanguageConfig = {
       main: mainLang,
       sub: subLang,
-      mainPercent: langPercent
+      mainPercent: langPercent,
+      length: lyricsLength
     };
 
     try {
@@ -352,6 +354,8 @@ export default function App() {
           setVocalType={setVocalType}
           currentModel={currentModel}
           handleModelChange={handleModelChange}
+          lyricsLength={lyricsLength}
+          setLyricsLength={setLyricsLength}
         />
 
         {/* Genre Selection Grid */}

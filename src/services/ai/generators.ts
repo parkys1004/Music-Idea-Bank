@@ -86,6 +86,10 @@ export async function generateLyrics(genre: string, title: string, stylePrompt: 
     ? `메인 언어: ${langConfig.main} (${langConfig.mainPercent}%), 서브 언어: ${langConfig.sub} (${100 - langConfig.mainPercent}%) 비율로 혼합하여 작성해주세요.`
     : `언어: ${langConfig.main}로만 작성해주세요.`;
 
+  const lengthInstruction = langConfig.length 
+    ? `가사 길이는 공백 포함 약 ${langConfig.length.total}자 (공백 제외 약 ${langConfig.length.noSpace}자) 정도로 작성해주세요.`
+    : `가사 길이는 공백 포함 약 800자 (공백 제외 약 400자) 정도로 작성해주세요.`;
+
   const prompt = `
     장르: ${genre}
     제목: ${title}
@@ -96,8 +100,15 @@ export async function generateLyrics(genre: string, title: string, stylePrompt: 
     [필수 요구사항]
     1. SUNO V5 모델이 이해할 수 있는 **구조 메타 태그**를 반드시 포함하세요.
        - 사용 가능한 태그: [Intro], [Verse], [Pre-Chorus], [Chorus], [Bridge], [Outro], [End]
-    2. ${languageInstruction}
-    3. 스타일 프롬프트에 묘사된 분위기를 가사에 반영하세요.
+    2. **장르별 추천 구조를 반영하여 작성해주세요:**
+       - **K-Pop/Pop Dance:** [Intro] -> [Verse 1] -> [Pre-Chorus] -> [Chorus] -> [Verse 2] -> [Pre-Chorus] -> [Chorus] -> [Bridge] -> [Chorus] -> [Outro]
+       - **Ballad/R&B:** [Intro] -> [Verse 1] -> [Verse 2] -> [Chorus] -> [Verse 3] -> [Bridge] -> [Chorus] -> [Outro]
+       - **Hip-hop:** [Intro] -> [Verse 1] -> [Chorus] -> [Verse 2] -> [Chorus] -> [Verse 3] -> [Outro]
+       - **EDM:** [Intro] -> [Build-up] -> [Drop] -> [Verse] -> [Build-up] -> [Drop] -> [Outro]
+       - 그 외 장르는 해당 장르의 전형적인 곡 구조를 따르세요.
+    3. ${languageInstruction}
+    4. ${lengthInstruction}
+    5. 스타일 프롬프트에 묘사된 분위기를 가사에 반영하세요.
     
     JSON이 아닌 일반 텍스트로 가사만 출력하세요.
   `;

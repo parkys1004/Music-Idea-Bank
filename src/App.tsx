@@ -29,6 +29,7 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(true);
   const [currentModel, setCurrentModel] = useState(getModel());
   const [lyricsLength, setLyricsLength] = useState({ total: 800, noSpace: 400 });
+  const [theme, setTheme] = useState('');
 
   const handleModelChange = (modelId: string) => {
     setModel(modelId);
@@ -109,7 +110,7 @@ export default function App() {
 
     try {
       // Step 1: Generate Metadata (Titles & Styles)
-      const metadata = await generateIdeaMetadata(genreName, vocalType);
+      const metadata = await generateIdeaMetadata(genreName, vocalType, theme);
       
       // Initialize ideas with metadata and empty lyrics
       const initialIdeas = metadata.map(m => ({ ...m, lyrics: "", genre: genreName }));
@@ -125,7 +126,7 @@ export default function App() {
 
       const lyricPromises = initialIdeas.map(async (idea, index) => {
         try {
-          const lyrics = await generateLyrics(genreName, idea.title, idea.stylePrompt, langConfig);
+          const lyrics = await generateLyrics(genreName, idea.title, idea.stylePrompt, langConfig, theme);
           
           // Update State for UI
           setIdeas(prev => {
@@ -356,6 +357,8 @@ export default function App() {
           handleModelChange={handleModelChange}
           lyricsLength={lyricsLength}
           setLyricsLength={setLyricsLength}
+          theme={theme}
+          setTheme={setTheme}
         />
 
         {/* Genre Selection Grid */}

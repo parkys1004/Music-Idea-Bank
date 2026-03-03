@@ -2,10 +2,14 @@ import { Type } from "@google/genai";
 import { getAiClient, getModel } from "./config";
 import { IdeaMetadata, LanguageConfig } from "./types";
 
-export async function generateIdeaMetadata(genre: string, vocalType: string): Promise<IdeaMetadata[]> {
+export async function generateIdeaMetadata(genre: string, vocalType: string, theme?: string): Promise<IdeaMetadata[]> {
   const model = getModel();
   const ai = getAiClient();
   
+  const themeInstruction = theme 
+    ? `사용자가 지정한 주제는 "${theme}"입니다. 이 주제를 중심으로 제목과 분위기를 구상하세요.`
+    : `주제가 지정되지 않았으므로, ${genre} 장르에 어울리는 대중적이고 매력적인 주제를 자유롭게 선정하세요.`;
+
   const prompt = `
     [Persona & Expertise]
     당신은 생성형 AI 오디오 모델인 SUNO V5의 알고리즘 아키텍처와 음악 이론을 완벽하게 통합한 'AI 뮤직 프로듀싱 디렉터'입니다. 
@@ -27,10 +31,11 @@ export async function generateIdeaMetadata(genre: string, vocalType: string): Pr
     [Task]
     사용자가 선택한 음악 장르는 "${genre}"입니다.
     사용자가 선호하는 보컬 타입은 "${vocalType}"입니다.
-    이 장르와 보컬 타입을 기반으로, 위 지식 베이스를 활용하여 SUNO V5에 최적화된 음악 아이디어 5개를 구상해주세요.
+    ${themeInstruction}
+    이 장르와 보컬 타입, 그리고 주제를 기반으로, 위 지식 베이스를 활용하여 SUNO V5에 최적화된 음악 아이디어 5개를 구상해주세요.
     
     각 아이디어에 대해 다음을 생성하세요:
-    1. **제목 (Title)**: 창의적이고 매력적인 한국어 노래 제목
+    1. **제목 (Title)**: 창의적이고 매력적인 한국어 노래 제목 (주제 반영 필수)
     2. **스타일 프롬프트 (Style Prompt)**: 위 10번 템플릿([Main Genre], [Sub-Genre]...)을 엄격히 준수하여 영문으로 작성하세요. 
        - **[Vocal Style]** 부분에 사용자가 선택한 "${vocalType}"을 반영하여 구체적인 보컬 톤을 묘사하세요. (예: "${vocalType}" -> "ethereal female vocals", "gritty male vocals" 등 장르에 맞게 변형)
        - 장르에 맞는 구체적인 악기, 분위기, BPM을 조합하고, **모든 프롬프트의 끝에 반드시 'pristine production, wide stereo, hifi, masterpiece' 등 고음질 태그를 포함하세요.**
@@ -78,7 +83,7 @@ export async function generateIdeaMetadata(genre: string, vocalType: string): Pr
   }
 }
 
-export async function generateLyrics(genre: string, title: string, stylePrompt: string, langConfig: LanguageConfig): Promise<string> {
+export async function generateLyrics(genre: string, title: string, stylePrompt: string, langConfig: LanguageConfig, theme?: string): Promise<string> {
   const model = getModel();
   const ai = getAiClient();
   
@@ -90,10 +95,15 @@ export async function generateLyrics(genre: string, title: string, stylePrompt: 
     ? `가사 길이는 공백 포함 약 ${langConfig.length.total}자 (공백 제외 약 ${langConfig.length.noSpace}자) 정도로 작성해주세요.`
     : `가사 길이는 공백 포함 약 800자 (공백 제외 약 400자) 정도로 작성해주세요.`;
 
+  const themeInstruction = theme
+    ? `주제: ${theme} (이 주제를 가사에 깊이 있게 반영해주세요)`
+    : `주제: 곡의 제목과 스타일에 어울리는 자유 주제`;
+
   const prompt = `
     장르: ${genre}
     제목: ${title}
     스타일: ${stylePrompt}
+    ${themeInstruction}
     
     위 곡에 어울리는 가사를 작성해주세요.
     

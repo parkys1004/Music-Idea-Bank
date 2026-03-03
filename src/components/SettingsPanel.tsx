@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Globe, User, Cpu, AlignLeft } from 'lucide-react';
+import { Globe, User, Cpu, AlignLeft, PenTool } from 'lucide-react';
 import { LANGUAGES, VOCAL_TYPES } from '../constants';
 import { AVAILABLE_MODELS } from '../services/ai';
 import { cn } from '../lib/utils';
@@ -20,6 +20,8 @@ interface SettingsPanelProps {
   handleModelChange: (modelId: string) => void;
   lyricsLength: { total: number; noSpace: number };
   setLyricsLength: (length: { total: number; noSpace: number }) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 export default function SettingsPanel({
@@ -38,6 +40,8 @@ export default function SettingsPanel({
   handleModelChange,
   lyricsLength,
   setLyricsLength,
+  theme,
+  setTheme,
 }: SettingsPanelProps) {
   return (
     <AnimatePresence>
@@ -49,6 +53,25 @@ export default function SettingsPanel({
           className="overflow-hidden mb-12 max-w-2xl mx-auto"
         >
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
+            {/* Theme Settings */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-white/90 font-medium">
+                <PenTool className="w-4 h-4 text-yellow-400" />
+                주제 설정 (선택사항)
+              </div>
+              <div>
+                <input
+                  type="text"
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                  placeholder="예: 첫사랑, 이별, 희망, 여행, 크리스마스 등 (비워두면 AI가 알아서 선정)"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 placeholder:text-white/30"
+                />
+              </div>
+            </div>
+
+            <div className="h-px bg-white/10" />
+
             {/* Language Settings */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-white/90 font-medium">

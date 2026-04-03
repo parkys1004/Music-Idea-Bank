@@ -108,8 +108,10 @@ export async function generateLyrics(genre: string, title: string, stylePrompt: 
     위 곡에 어울리는 가사를 작성해주세요.
     
     [필수 요구사항]
-    1. SUNO V5 모델이 이해할 수 있는 **구조 메타 태그**를 반드시 포함하세요.
-       - 사용 가능한 태그: [Intro], [Verse], [Pre-Chorus], [Chorus], [Bridge], [Outro], [End]
+    1. SUNO V5 모델이 이해할 수 있는 **구조 메타 태그 및 지시문**을 반드시 대괄호 \`[]\`로 감싸서 영문으로 포함하세요.
+       - 곡의 도입부(Intro) 분위기나 악기 구성을 설명하는 문구도 반드시 대괄호 안에 작성하세요. (예: [Intro: Soft piano and acoustic guitar, melancholic mood])
+       - 사용 가능한 태그 예시: [Intro], [Verse 1], [Pre-Chorus], [Chorus], [Bridge], [Guitar Solo], [Beat Drop], [Outro], [End]
+       - 한글 지시문(예: 1절, 후렴, 간주 등)은 절대 사용하지 마세요. 모든 곡 구조와 연주 지시문은 대괄호 안의 영문이어야 합니다.
     2. **장르별 추천 구조를 반영하여 작성해주세요:**
        - **K-Pop/Pop Dance:** [Intro] -> [Verse 1] -> [Pre-Chorus] -> [Chorus] -> [Verse 2] -> [Pre-Chorus] -> [Chorus] -> [Bridge] -> [Chorus] -> [Outro]
        - **Ballad/R&B:** [Intro] -> [Verse 1] -> [Verse 2] -> [Chorus] -> [Verse 3] -> [Bridge] -> [Chorus] -> [Outro]

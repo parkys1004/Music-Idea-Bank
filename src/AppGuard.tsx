@@ -12,9 +12,29 @@ export default function AppGuard({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initGuard = async () => {
       try {
-        // 1. 주소창 파라미터(?u=) 확인
+        // 1. 주소창 파라미터(?u=, ?s=) 확인
         const params = new URLSearchParams(window.location.search);
         const emailParam = params.get('u');
+        const sessionToken = params.get('s');
+
+        // [추가] 세션 토큰(?s=) 자동 인증 로직
+        if (sessionToken) {
+          const sessionDoc = await getDoc(doc(adminDb, 'access_sessions', sessionToken));
+          if (sessionDoc.exists()) {
+            const data = sessionDoc.data();
+            const now = new Date();
+            const expiresAt = data.expiresAt?.toDate ? data.expiresAt.toDate() : new Date(data.expiresAt);
+            
+            if (now < expiresAt && (data.tier === 'silver' || data.tier === 'gold' || data.tier === 'admin')) {
+              setIsAuthorized(true);
+              if (data.email) {
+                setDetectedEmail(data.email);
+                localStorage.setItem('user_email', data.email);
+              }
+              localStorage.setItem('app_access_token', 'true');
+            }
+          }
+        }
        
         // 2. 브라우저 저장소(localStorage)에서 기존 기록 확인
         const savedEmail = localStorage.getItem('user_email');
